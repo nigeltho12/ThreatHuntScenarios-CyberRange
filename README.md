@@ -458,16 +458,16 @@ DeviceFileEvents
 | where FolderPath contains "Downloads" 
 ```
 
----
-
-## Created By:
-- **Author Name**: Nigeltho12
-- **Author Contact**: https://www.linkedin.com/in/nigel-thompson-8a7995244/
-- **Date**: April 17, 2025
-
 
 ---
 
 ## Additional Notes:
 - Block macros from Internet via GPO.
 - Use AMSI or Defender for Office for behavioral detection.
+
+ ---
+
+## Created By:
+- **Author Name**: Nigeltho12
+- **Author Contact**: https://www.linkedin.com/in/nigel-thompson-8a7995244/
+- **Date**: April 17, 2025
