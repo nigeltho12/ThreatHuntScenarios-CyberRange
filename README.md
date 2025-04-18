@@ -40,15 +40,7 @@ DeviceProcessEvents
 
 ---
 
-## Created By:
-- **Author Name**: [Your Name Here]
-- **Author Contact**: [LinkedIn/GitHub/etc.]
-- **Date**: April 17, 2025
 
-## Validated By:
-- **Reviewer Name**:
-- **Reviewer Contact**:
-- **Validation Date**:
 
 ---
 
@@ -92,15 +84,7 @@ DeviceNetworkEvents
 
 ---
 
-## Created By:
-- **Author Name**: [Your Name Here]
-- **Author Contact**: [LinkedIn/GitHub/etc.]
-- **Date**: April 17, 2025
 
-## Validated By:
-- **Reviewer Name**:
-- **Reviewer Contact**:
-- **Validation Date**:
 
 ---
 
@@ -146,15 +130,7 @@ DeviceFileEvents
 
 ---
 
-## Created By:
-- **Author Name**: [Your Name Here]
-- **Author Contact**: [LinkedIn/GitHub/etc.]
-- **Date**: April 17, 2025
 
-## Validated By:
-- **Reviewer Name**:
-- **Reviewer Contact**:
-- **Validation Date**:
 
 ---
 
@@ -200,15 +176,7 @@ CloudAuditLogs
 
 ---
 
-## Created By:
-- **Author Name**: [Your Name Here]
-- **Author Contact**: [LinkedIn/GitHub/etc.]
-- **Date**: April 17, 2025
 
-## Validated By:
-- **Reviewer Name**:
-- **Reviewer Contact**:
-- **Validation Date**:
 
 ---
 
@@ -254,15 +222,6 @@ DeviceNetworkEvents
 
 ---
 
-## Created By:
-- **Author Name**: [Your Name Here]
-- **Author Contact**: [LinkedIn/GitHub/etc.]
-- **Date**: April 17, 2025
-
-## Validated By:
-- **Reviewer Name**:
-- **Reviewer Contact**:
-- **Validation Date**:
 
 ---
 
@@ -310,14 +269,11 @@ DeviceEvents
 ---
 
 ## Created By:
-- **Author Name**: [Your Name Here]
-- **Author Contact**: [LinkedIn/GitHub/etc.]
+- **Author Name**: Nigel T
+- **Author Contact**: https://www.linkedin.com/in/nigel-thompson-8a7995244/
 - **Date**: April 17, 2025
 
-## Validated By:
-- **Reviewer Name**:
-- **Reviewer Contact**:
-- **Validation Date**:
+
 
 ---
 
